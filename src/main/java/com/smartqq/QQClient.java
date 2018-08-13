@@ -8,7 +8,8 @@ import java.net.Socket;
 
 public class QQClient {
     public static void main(String[] args) throws IOException {
-        final Socket socket = new Socket("192.168.31.112", 8088);
+        final Socket socket = new Socket("47.106.201.17", 8088);
+//        final Socket socket = new Socket("192.168.0.171", 8088);
 
         new Thread(new Runnable() {
             @Override
@@ -16,9 +17,10 @@ public class QQClient {
                 try {
                     BufferedReader br = new BufferedReader(
                             new InputStreamReader(
-                                    socket.getInputStream()));
+                                    socket.getInputStream(), "UTF-8"));
                     String content;
                     while ((content=br.readLine()) != null){
+                        content = new String(content.getBytes("UTF-8"));
                         if(content.contains("|")){
                             String[] contents = content.split("\\|");
                             String fromUser = contents[0];
@@ -36,10 +38,10 @@ public class QQClient {
 
         BufferedReader sendBuff = new BufferedReader(
                 new InputStreamReader(
-                        System.in));
+                        System.in, "UTF-8"));
         String send;
         try{
-            PrintStream ps = new PrintStream(socket.getOutputStream());
+            PrintStream ps = new PrintStream(socket.getOutputStream(), true, "UTF-8");
             while ((send=sendBuff.readLine()) != null){
                 ps.println(send);
             }
